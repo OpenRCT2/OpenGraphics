@@ -1,0 +1,23 @@
+echo "Palettizing images..."
+
+convert remap*.png -dither none -remap "../../../templates/paletteremap.png" "remap%04d.png"
+convert img*.png -dither none -remap "../../../templates/palette.png" "img%04d.png"
+
+echo "Compositing images..."
+
+for f in img*.png; do 
+	g=${f:3:4}
+	composite img$g.png remap$g.png "../composite/out$g.bmp"
+done
+
+echo "Cleaning up..."
+
+for f in img*.png; do 
+	rm $f
+done
+
+for f in remap*.png; do 
+	rm $f
+done
+
+echo "Done"
