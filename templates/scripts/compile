@@ -2,7 +2,34 @@ echo "Palettizing images..."
 
 mkdir ../finished 2>/dev/null
 
-convert img*.png -dither none -remap "../../../templates/palette.png" "../finished/$g.bmp"
+convert img*.png -dither none -remap "../../../templates/palette.png" "../finished/pic$g.bmp"
+
+for f in finished/pic*.png ; do 
+	g=${f:13:4}
+	
+	case $g in
+		0000)
+			mogrify -gravity Center -crop 112x112+0+0 +repage -type truecolor "finished/pic$g.bmp"
+			echo "0,0" >> finished/pos.txt
+			;;
+		0001)
+			;&
+		0002)
+			convert canvas:"#23532b" "finished/pic$g.bmp"
+			echo "0,0" >> finished/pos.txt
+			;;
+		*)
+			canvastex=$(mogrify -trim -print '%X%Y' -type truecolor "finished/pic$g.bmp")
+			
+			canvastex=${canvastex:1}
+			IFS=+ read x y <<< "$canvastex"
+			posx=$(expr 128 - $x)
+			posy=$(expr 128 - $y)
+			echo "${posx},${posy}" >> finished/pos.txt
+			;;
+	esac
+	
+done
 
 #echo "Cleaning up..."
 
