@@ -24,7 +24,7 @@ done
 
 echo "Palettizing images..."
 
-convert "renderout/remap*.png" +dither -remap "../../../templates/paletteremap2.png" "renderout/remap%04d.png"
+convert "renderout/remap*.png" -brightness-contrast -2x-20 +dither -remap "../../../templates/paletteremap2.png" "renderout/remap%04d.png"
 convert "renderout/img*.png" +dither -remap "../../../templates/paletteforremap2.png" "renderout/img%04d.png"
 
 echo "Compositing images..."
