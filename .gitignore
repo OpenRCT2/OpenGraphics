@@ -1,0 +1,11 @@
+ Rendered Images
+*.png
+**/finished
+**/renderout
+
+# Blender Autosave files
+*.blend1
+
+.directory
+Thumbs.db
+Desktop.ini
