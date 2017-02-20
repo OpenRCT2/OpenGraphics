@@ -53,7 +53,7 @@ for f in renderout/img*.png ; do
 		# Actual ride images
 		*)
 			composite "renderout/img$g.png" "renderout/remap$g.png" "finished/pic$g.bmp"
-			canvastex=$(mogrify -trim -print '%X%Y' -type truecolor "finished/pic$g.bmp")
+			canvastex=$(mogrify -trim -print '%X%Y' -type truecolor "finished/pic$g.bmp" -quiet)
 			
 			canvastex=${canvastex:1}
 			IFS=+ read x y <<< "$canvastex"
