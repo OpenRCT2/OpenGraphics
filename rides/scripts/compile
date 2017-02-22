@@ -43,29 +43,29 @@ echo "Palettizing images..."
 mkdir "finished" 2>/dev/null
 
 if [ "$rem" == "true" ]; then
-	convert "renderout/remap*.png" -brightness-contrast -2x-20 +dither -remap "../../../templates/paletteremap$nrem.png" "renderout/remap%04d.png"
-	convert "renderout/img*.png" +dither -remap "../../../templates/paletteforremap$nrem.png" "renderout/img%04d.png"
+	convert "renderout/remap*.png" -brightness-contrast -2x-20 +dither -remap "../../../templates/paletteremap$nrem.png" "renderout/remap%05d.png"
+	convert "renderout/img*.png" +dither -remap "../../../templates/paletteforremap$nrem.png" "renderout/img%05d.png"
 fi
 
-convert "renderout/img*.png" -dither none -remap "../../../templates/palette.png" "finished/pic%04d.bmp"
+convert "renderout/img*.png" -dither none -remap "../../../templates/palette.png" "finished/pic%05d.bmp"
 
 echo "Compositing images..."
 
 if [ "$rem" == "true" ]; then
 	for f in renderout/img*.png ; do 
-		g=${f:13:4}
+		g=${f:13:5}
 		
 		case $g in
 			# Icon image
-			0000)
+			00000)
 				composite "renderout/img$g.png" "renderout/remap$g.png" "finished/pic$g.bmp"
 				mogrify -gravity Center -crop 112x112+0+0 +repage -type truecolor "finished/pic$g.bmp"
 				echo "0,0" >> finished/pos.txt
 				;;
 			# Generate 2 Blank images
-			0001)
+			00001)
 				;&
-			0002)
+			00002)
 				convert canvas:"#23532b" "finished/pic$g.bmp"
 				echo "0,0" >> finished/pos.txt
 				;;
@@ -90,18 +90,18 @@ if [ "$rem" == "true" ]; then
 	done
 else
 	for f in finished/pic*.bmp ; do 
-		g=${f:12:4}
+		g=${f:12:5}
 		
 		case $g in
 			# Icon Image
-			0000)
+			00000)
 				mogrify -gravity Center -crop 112x112+0+0 +repage -type truecolor "finished/pic$g.bmp"
 				echo "0,0" >> finished/pos.txt
 				;;
 			# Generate 2 Blank images
-			0001)
+			00001)
 				;&
-			0002)
+			00002)
 				convert canvas:"#23532b" "finished/pic$g.bmp"
 				echo "0,0" >> finished/pos.txt
 				;;
