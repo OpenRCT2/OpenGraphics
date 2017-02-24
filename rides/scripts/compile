@@ -51,6 +51,8 @@ convert "renderout/img*.png" -dither none -remap "../../../templates/palette.png
 
 echo "Compositing images..."
 
+rm "finished/pos.txt" 2>/dev/null
+
 if [ "$rem" == "true" ]; then
 	for f in renderout/img*.png ; do 
 		g=${f:13:5}
@@ -59,7 +61,7 @@ if [ "$rem" == "true" ]; then
 			# Icon image
 			00000)
 				composite "renderout/img$g.png" "renderout/remap$g.png" "finished/pic$g.bmp"
-				mogrify -gravity Center -crop 112x112+0+0 +repage -type truecolor "finished/pic$g.bmp"
+				mogrify -gravity Center -crop 112x112+0+0 +repage -type Palette "finished/pic$g.bmp"
 				echo "0,0" >> finished/pos.txt
 				;;
 			# Generate 2 Blank images
@@ -72,9 +74,9 @@ if [ "$rem" == "true" ]; then
 			# Actual ride images
 			*)
 				composite "renderout/img$g.png" "renderout/remap$g.png" "finished/pic$g.bmp"
-				canvastex=$(mogrify -trim -print '%X%Y' -type truecolor "finished/pic$g.bmp" -quiet)
+				canvastex=$(mogrify -trim -print '%X%Y' -type Palette "finished/pic$g.bmp" -quiet)
 				missed=${canvastex:0:1} # Catch missed (i.e. empty) images
-				if [ $missed==- ]; then
+				if [ $missed == "-" ]; then
 					posx=0
 					posy=0
 				else
@@ -95,7 +97,7 @@ else
 		case $g in
 			# Icon Image
 			00000)
-				mogrify -gravity Center -crop 112x112+0+0 +repage -type truecolor "finished/pic$g.bmp"
+				mogrify -gravity Center -crop 112x112+0+0 +repage -type Palette "finished/pic$g.bmp"
 				echo "0,0" >> finished/pos.txt
 				;;
 			# Generate 2 Blank images
@@ -107,9 +109,9 @@ else
 				;;
 			# Actual ride images
 			*)
-				canvastex=$(mogrify -trim -print '%X%Y' -type truecolor "finished/pic$g.bmp" -quiet)
+				canvastex=$(mogrify -trim -print '%X%Y' -type Palette "finished/pic$g.bmp" -quiet)
 				missed=${canvastex:0:1} # Catch missed (i.e. empty) images
-				if [ $missed==- ]; then
+				if [ $missed == "-" ]; then
 					posx=0
 					posy=0
 				else
