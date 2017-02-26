@@ -94,8 +94,8 @@ if [ "$rem" == "true" ]; then
 				else
 					canvastex=${canvastex:1}
 					IFS=+ read x y <<< "$canvastex"
-					posx=$(expr 127 - $x)
-					posy=$(expr 127 - $y)
+					posx=$(expr 128 - $x)
+					posy=$(expr 128 - $y)
 				fi
 				echo "-${posx},-${posy}" >> finished/pos.txt
 				;;
