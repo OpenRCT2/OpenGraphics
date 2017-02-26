@@ -44,11 +44,13 @@ while getopts ":hdcr:" option; do
 	esac
 done
 
+# Create finished directory if not exist
+mkdir "finished" 2>/dev/null
+
 if [ $palettize == "true" ]; then
 
 	echo "Palettizing images..."
 
-	mkdir "finished" 2>/dev/null
 
 	if [ "$rem" == "true" ]; then
 		convert "renderout/remap*.png" -brightness-contrast -2x-20 +dither -remap "../../../templates/paletteremap$nrem.png" "renderout/remap%05d.png"
@@ -61,32 +63,30 @@ fi
 
 echo "Compositing images..."
 
-rm "finished/pos.txt" 2>/dev/null
-
 if [ "$rem" == "true" ]; then
 	for f in renderout/img*.png ; do 
 		g=${f:13:5}
 		
+		
+		# Composite and trim images
 		case $g in
 			# Icon image
 			00000)
-				composite "renderout/img$g.png" "renderout/remap$g.png" "BMP2:finished/pic$g.bmp"
-				convert -gravity Center -crop 112x112+0+0 +repage +dither -remap "../../../templates/paletteraw.png" "finished/pic$g.bmp" "BMP2:finished/pic$g.bmp"
-				#bmptopnm "finished/pic$g.bmp" | ppmtobmp -bpp 8 > "finished/pic$g.bmp"
-				echo "0,0" >> finished/pos.txt
+				composite "renderout/img$g.png" "renderout/remap$g.png" "finished/pic$g.ppm"
+				convert -gravity Center -crop 112x112+0+0 +repage "finished/pic$g.ppm" "finished/pic$g.ppm"
+				echo "0,0" > finished/pos.txt
 				;;
 			# Generate 2 Blank images
 			00001)
 				;&
 			00002)
-				convert canvas:"#23532b" "BMP2:finished/pic$g.bmp"
+				convert canvas:"#23532b" "finished/pic$g.ppm"
 				echo "0,0" >> finished/pos.txt
 				;;
 			# Actual ride images
 			*)
-				composite "renderout/img$g.png" "renderout/remap$g.png" "BMP2:finished/pic$g.bmp"
-				canvastex=$(convert  "renderout/remap$g.png" -trim -print '%X%Y' -quiet "BMP2:finished/pic$g.bmp")
-				#bmptopnm "finished/pic$g.bmp" | ppmtobmp -bpp 8 > "finished/pic$g.bmp"
+				composite "renderout/img$g.png" "renderout/remap$g.png" "finished/pic$g.ppm"
+				canvastex=$(convert "finished/pic$g.ppm" -trim -print '%X%Y' -quiet "finished/pic$g.ppm")
 				missed=${canvastex:0:1} # Catch missed (i.e. empty) images
 				if [ $missed == "-" ]; then
 					posx=0
@@ -101,15 +101,20 @@ if [ "$rem" == "true" ]; then
 				;;
 		esac
 		
+		# Convert ppm to 8-bit BMP
+		ppmtobmp "finished/pic$g.ppm" -bpp 8 -quiet > "finished/pic$g.bmp"
+		rm "finished/pic$g.ppm"
+		
 	done
 else
 	for f in finished/pic*.bmp ; do 
 		g=${f:12:5}
 		
+		# Trim images
 		case $g in
 			# Icon Image
 			00000)
-				mogrify -gravity Center -crop 112x112+0+0 +repage -colors 256 "finished/pic$g.bmp"
+				mogrify -gravity Center -crop 112x112+0+0 +repage -colors 256 "finished/pic$g.ppm"
 				echo "0,0" >> finished/pos.txt
 				;;
 			# Generate 2 Blank images
@@ -121,8 +126,7 @@ else
 				;;
 			# Actual ride images
 			*)
-				canvastex=$(mogrify -trim -print '%X%Y' -colors 256 "finished/pic$g.bmp" -quiet)
-				bmptopnm "finished/pic$g.bmp" | ppmtobmp -bpp 8 > "finished/pic$g.bmp"
+				canvastex=$(mogrify -trim -print '%X%Y' -colors 256 "finished/pic$g.ppm" -quiet)
 				missed=${canvastex:0:1} # Catch missed (i.e. empty) images
 				if [ $missed == "-" ]; then
 					posx=0
@@ -137,15 +141,20 @@ else
 				;;
 		esac
 		
+		# Convert ppm to 8-bit BMP
+		ppmtobmp "finished/pic$g.ppm" -bpp 8 -quiet > "finished/pic$g.bmp"
+		rm "finished/pic$g.ppm"
+		
 	done
 fi
+
 	
-# Cleanup if -d is set
+	# Cleanup if -d is set
 
 if [ "$delete" == "true" ]; then
 	echo "Cleaning up..."
 
-	for f in renderout/img*.png; do 
+	for f in renderout/*.png; do 
 		rm $f
 	done
 fi
