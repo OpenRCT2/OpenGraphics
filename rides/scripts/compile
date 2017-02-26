@@ -1,13 +1,16 @@
 help="Usage: `basename $0` [options] -- Compiles images for rides
 	-h			Echos this help text
 	-d			Delete images in renderout folder after compiling
-	-r 1|2|3	Enables 1, 2, or 3 re-mappable colors"
+	-r 1|2|3	Enables 1, 2, or 3 re-mappable colors
+	-c			Only composites images, i.e. if images have already been palettized
+"
 
 delete=false
 rem=false
+palettize=true
 
 # Get command line flags
-while getopts ":hdr:" option; do
+while getopts ":hdcr:" option; do
 	case "$option" in
 		h)
 			echo "$help"
@@ -15,6 +18,9 @@ while getopts ":hdr:" option; do
 			;;
 		d)
 			delete=true
+			;;
+		c)
+			palettize=false
 			;;
 		r)
 			nrem=$OPTARG
@@ -38,16 +44,20 @@ while getopts ":hdr:" option; do
 	esac
 done
 
-echo "Palettizing images..."
+if [ $palettize == "true" ]; then
 
-mkdir "finished" 2>/dev/null
+	echo "Palettizing images..."
 
-if [ "$rem" == "true" ]; then
-	convert "renderout/remap*.png" -brightness-contrast -2x-20 +dither -remap "../../../templates/paletteremap$nrem.png" "renderout/remap%05d.png"
-	convert "renderout/img*.png" +dither -remap "../../../templates/paletteforremap$nrem.png" "renderout/img%05d.png"
+	mkdir "finished" 2>/dev/null
+
+	if [ "$rem" == "true" ]; then
+		convert "renderout/remap*.png" -brightness-contrast -2x-20 +dither -remap "../../../templates/paletteremap$nrem.png" "renderout/remap%05d.png"
+		convert "renderout/img*.png" +dither -remap "../../../templates/paletteforremap$nrem.png" "renderout/img%05d.png"
+	else
+		convert "renderout/img*.png" -dither none -remap "../../../templates/palette.png" BMP3:"finished/pic%05d.bmp"
+	fi
+
 fi
-
-convert "renderout/img*.png" -dither none -remap "../../../templates/palette.png" "finished/pic%05d.bmp"
 
 echo "Compositing images..."
 
@@ -60,21 +70,23 @@ if [ "$rem" == "true" ]; then
 		case $g in
 			# Icon image
 			00000)
-				composite "renderout/img$g.png" "renderout/remap$g.png" "finished/pic$g.bmp"
-				mogrify -gravity Center -crop 112x112+0+0 +repage -type Palette "finished/pic$g.bmp"
+				composite "renderout/img$g.png" "renderout/remap$g.png" "BMP2:finished/pic$g.bmp"
+				convert -gravity Center -crop 112x112+0+0 +repage +dither -remap "../../../templates/paletteraw.png" "finished/pic$g.bmp" "BMP2:finished/pic$g.bmp"
+				#bmptopnm "finished/pic$g.bmp" | ppmtobmp -bpp 8 > "finished/pic$g.bmp"
 				echo "0,0" >> finished/pos.txt
 				;;
 			# Generate 2 Blank images
 			00001)
 				;&
 			00002)
-				convert canvas:"#23532b" "finished/pic$g.bmp"
+				convert canvas:"#23532b" "BMP2:finished/pic$g.bmp"
 				echo "0,0" >> finished/pos.txt
 				;;
 			# Actual ride images
 			*)
-				composite "renderout/img$g.png" "renderout/remap$g.png" "finished/pic$g.bmp"
-				canvastex=$(mogrify -trim -print '%X%Y' -type Palette "finished/pic$g.bmp" -quiet)
+				composite "renderout/img$g.png" "renderout/remap$g.png" "BMP2:finished/pic$g.bmp"
+				canvastex=$(convert  "renderout/remap$g.png" -trim -print '%X%Y' -quiet "BMP2:finished/pic$g.bmp")
+				#bmptopnm "finished/pic$g.bmp" | ppmtobmp -bpp 8 > "finished/pic$g.bmp"
 				missed=${canvastex:0:1} # Catch missed (i.e. empty) images
 				if [ $missed == "-" ]; then
 					posx=0
@@ -82,10 +94,10 @@ if [ "$rem" == "true" ]; then
 				else
 					canvastex=${canvastex:1}
 					IFS=+ read x y <<< "$canvastex"
-					posx=$(expr 128 - $x)
-					posy=$(expr 128 - $y)
+					posx=$(expr 127 - $x)
+					posy=$(expr 127 - $y)
 				fi
-				echo "${posx},${posy}" >> finished/pos.txt
+				echo "-${posx},-${posy}" >> finished/pos.txt
 				;;
 		esac
 		
@@ -97,7 +109,7 @@ else
 		case $g in
 			# Icon Image
 			00000)
-				mogrify -gravity Center -crop 112x112+0+0 +repage -type Palette "finished/pic$g.bmp"
+				mogrify -gravity Center -crop 112x112+0+0 +repage -colors 256 "finished/pic$g.bmp"
 				echo "0,0" >> finished/pos.txt
 				;;
 			# Generate 2 Blank images
@@ -109,7 +121,8 @@ else
 				;;
 			# Actual ride images
 			*)
-				canvastex=$(mogrify -trim -print '%X%Y' -type Palette "finished/pic$g.bmp" -quiet)
+				canvastex=$(mogrify -trim -print '%X%Y' -colors 256 "finished/pic$g.bmp" -quiet)
+				bmptopnm "finished/pic$g.bmp" | ppmtobmp -bpp 8 > "finished/pic$g.bmp"
 				missed=${canvastex:0:1} # Catch missed (i.e. empty) images
 				if [ $missed == "-" ]; then
 					posx=0
@@ -120,7 +133,7 @@ else
 					posx=$(expr 128 - $x)
 					posy=$(expr 128 - $y)
 				fi
-				echo "${posx},${posy}" >> finished/pos.txt
+				echo "-${posx},-${posy}" >> finished/pos.txt
 				;;
 		esac
 		
