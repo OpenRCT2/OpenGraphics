@@ -10,7 +10,7 @@
 *.bmp
 !templates/**
 
-#Hidden folders
+#Hidden folders/files
 .*/
 .*
 !.gitignore
