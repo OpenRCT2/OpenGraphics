@@ -101,9 +101,8 @@ if [ "$rem" == "true" ]; then
 				echo "-${posx},-${posy}" >> finished/pos.txt
 				;;
 		esac
-		
-		# Convert ppm to 8-bit BMP
-		ppmtobmp "finished/pic$g.ppm" -bpp 8 -quiet > "finished/pic$(($g)).bmp"		#$(()) converts to integer, to get rid of zero padding
+
+		ppmtobmp "finished/pic$g.ppm" -bpp 8 -quiet > "finished/pic$((10#$g)).bmp"		#$(()) converts to integer, to get rid of zero padding
 		rm "finished/pic$g.ppm"
 		
 	done
@@ -143,7 +142,7 @@ else
 		esac
 		
 		# Convert ppm to 8-bit BMP
-		ppmtobmp "finished/pic$g.ppm" -bpp 8 -quiet > "finished/pic$(($g)).bmp"		#$(()) converts to integer, to get rid of zero padding
+		ppmtobmp "finished/pic$g.ppm" -bpp 8 -quiet > "finished/pic$((10#$g)).bmp"		#$(()) converts to integer, to get rid of zero padding
 		rm "finished/pic$g.ppm"
 		
 	done
