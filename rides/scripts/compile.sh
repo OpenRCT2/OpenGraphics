@@ -53,7 +53,8 @@ if [ $palettize == "true" ]; then
 
 
 	if [ "$rem" == "true" ]; then
-		convert "renderout/remap*.png" -brightness-contrast -2x-20 +dither -remap "../../../templates/paletteremap$nrem.png" "renderout/remap%05d.png"
+		# No need to palettize the remap, since this is now done in Blender
+		#convert "renderout/remap*.png"  +dither -remap "../../../templates/paletteremap$nrem.png" "renderout/remap%05d.png"
 		convert "renderout/img*.png" +dither -remap "../../../templates/paletteforremap$nrem.png" "renderout/img%05d.png"
 	else
 		convert "renderout/img*.png" -dither none -remap "../../../templates/palette.png" BMP3:"finished/pic%05d.bmp"
@@ -65,21 +66,21 @@ echo "Compositing images..."
 
 if [ "$rem" == "true" ]; then
 	for f in renderout/img*.png ; do 
-		g=${f:13:5}
+		g=${f:13:5}		# Extract digits from string
 		
 		
 		# Composite and trim images
 		case $g in
 			# Icon image
-			00000)
+			0)
 				composite "renderout/img$g.png" "renderout/remap$g.png" "finished/pic$g.ppm"
-				convert -gravity Center -crop 112x112+0+0 +repage "finished/pic$g.ppm" "finished/pic$g.ppm"
+				convert -gravity Center -crop 112x112+0+0 +repage +dither -remap "../../../templates/palette.png" "finished/pic$g.ppm" "finished/pic$g.ppm"
 				echo "0,0" > finished/pos.txt
 				;;
 			# Generate 2 Blank images
-			00001)
+			1)
 				;&
-			00002)
+			2)
 				convert canvas:"#23532b" "finished/pic$g.ppm"
 				echo "0,0" >> finished/pos.txt
 				;;
@@ -102,7 +103,7 @@ if [ "$rem" == "true" ]; then
 		esac
 		
 		# Convert ppm to 8-bit BMP
-		ppmtobmp "finished/pic$g.ppm" -bpp 8 -quiet > "finished/pic$g.bmp"
+		ppmtobmp "finished/pic$g.ppm" -bpp 8 -quiet > "finished/pic$(($g)).bmp"		#$(()) converts to integer, to get rid of zero padding
 		rm "finished/pic$g.ppm"
 		
 	done
@@ -142,7 +143,7 @@ else
 		esac
 		
 		# Convert ppm to 8-bit BMP
-		ppmtobmp "finished/pic$g.ppm" -bpp 8 -quiet > "finished/pic$g.bmp"
+		ppmtobmp "finished/pic$g.ppm" -bpp 8 -quiet > "finished/pic$(($g)).bmp"		#$(()) converts to integer, to get rid of zero padding
 		rm "finished/pic$g.ppm"
 		
 	done
