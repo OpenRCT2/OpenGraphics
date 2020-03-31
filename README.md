@@ -4,7 +4,10 @@
 
 ## Chat
 
-[![Gitter](https://badges.gitter.im/OpenRCT2/OpenGraphics.svg)](https://gitter.im/OpenRCT2/OpenGraphics?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+You can get in touch with us via the OpenRCT2 Discord server.
+
+Invitation link: https://discord.gg/uNzSmAj
+Direct link to channel: https://discordapp.com/channels/264137540670324737/691752238057783356
 
 ## Progress
 
