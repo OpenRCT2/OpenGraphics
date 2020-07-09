@@ -43,11 +43,16 @@ class SimpleOperator(bpy.types.Operator):
             filePath = outputPath + str(index) + ".png"
             outputFile = outputPath + str(index) + ".bmp"
             args = []
-            args.append("magick")
+            args.append("magick.exe")
             args.append(filePath)
-            #args.append("-alpha")
-            #args.append("Background")
             args.append("-background")
+            args.append("'sRGB(57,59,57)'")
+            args.append("-trim")
+            args.append("-alpha")
+            args.append("Remove")
+            args.append("-fuzz")
+            args.append("1%")
+            args.append("-opaque")
             args.append("'sRGB(57,59,57)'")
             args.append("-dither")
             args.append("FloydSteinberg")
@@ -55,7 +60,6 @@ class SimpleOperator(bpy.types.Operator):
             args.append("dither:diffusion-amount=30%")
             args.append("-remap")
             args.append(paletteFile)
-            args.append("-trim")
             args.append(outputFile)
             
             subprocess.call(args)
