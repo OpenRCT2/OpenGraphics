@@ -52,6 +52,8 @@ class SimpleOperator(bpy.types.Operator):
             args.append("Remove")
             args.append("-fuzz")
             args.append("1%")
+            args.append("-fill")
+            args.append("'sRGB(0,0,0)'")
             args.append("-opaque")
             args.append("'sRGB(57,59,57)'")
             args.append("-dither")
