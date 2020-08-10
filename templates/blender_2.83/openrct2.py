@@ -41,19 +41,63 @@ class SimpleOperator(bpy.types.Operator):
         
         for index in range(4):
             filePath = outputPath + str(index) + ".png"
+            mask = outputPath + "mask.png"
             outputFile = outputPath + str(index) + ".bmp"
             args = []
             args.append("magick.exe")
             args.append(filePath)
             args.append("-background")
             args.append("'sRGB(57,59,57)'")
-            args.append("-trim")
+            args.append("-alpha")
+            args.append("Extract")
+            args.append(mask)
+            subprocess.call(args)
+            
+            args = []
+            args.append("magick.exe")
+            args.append(filePath)
+            args.append("-background")
+            args.append("'sRGB(57,59,57)'")
             args.append("-alpha")
             args.append("Remove")
+            args.append(filePath)
+            subprocess.call(args)
+            
+            args = []
+            args.append("magick.exe")
+            args.append("convert")
+            mask = outputPath + "mask.png"
+            args.append(mask)
+            args.append("-threshold")
+            args.append("50%")
+            args.append(mask)
+            subprocess.call(args)
+            
+            args = []
+            args.append("magick.exe")
+            args.append("composite")
+            args.append("-compose")
+            args.append("multiply")
+            mask = outputPath + "mask.png"
+            args.append(mask)
+            args.append(filePath)
+            args.append(filePath)
+            subprocess.call(args)
+            
+            args = []
+            args.append("magick.exe")
+            args.append(filePath)
             args.append("-fuzz")
-            args.append("1%")
+            args.append("0%")
             args.append("-opaque")
             args.append("'sRGB(57,59,57)'")
+            args.append(filePath)
+            subprocess.call(args)
+            
+            args = []
+            args.append("magick.exe")
+            args.append(filePath)
+            args.append("-trim")
             args.append("-dither")
             args.append("FloydSteinberg")
             args.append("-define")
@@ -61,8 +105,8 @@ class SimpleOperator(bpy.types.Operator):
             args.append("-remap")
             args.append(paletteFile)
             args.append(outputFile)
-            
             subprocess.call(args)
+            
             
         return {'FINISHED'}
 
