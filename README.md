@@ -2,6 +2,10 @@
 
 **OpenGraphics** is a project established to replace the base graphics of Rollercoaster Tycoon 2. The aim is to create a set of freely-useable graphics that can be used with [OpenRCT2](https://github.com/OpenRCT2/OpenRCT2), to decouple its reliance on the copyrighted material from the original game and allow anyone to play the game for free.
 
+## Getting Started
+
+It is best to start by reading [the "Building a Ride" tutorial on the wiki.](https://github.com/OpenRCT2/OpenGraphics/wiki/Building-a-ride)
+
 ## Chat
 
 You can get in touch with us via the OpenRCT2 Discord server.
