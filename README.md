@@ -4,9 +4,10 @@
 
 ## Getting Started
 
-It is best to start by reading [the "Building a Ride" tutorial on the wiki.](https://github.com/OpenRCT2/OpenGraphics/wiki/Building-a-ride)\*
+We're in the process of setting up pipelines and deciding on the direction of OpenGraphics. If you have experience with art or tools development than consider checking out our discussions about establishing the rendering process:
+https://github.com/OpenRCT2/OpenGraphics/issues/24
 
-\*The exact rendering process is being worked on. You can already help by creating 3D models. If you have experience with art or plugin creation than consider checking out our discussions about esteblashing the rendering process.
+You can already start helping out by creating 3D models for scenery objects. If possible, try to use Blender 2.7. Check out [the spreadsheet](https://drive.google.com/open?id=1ljVeYxp8ijj5z4VuSa6Xo1-_p3wACdQCRudkvkLGApc) to see what has already been made. Just mark an object as WIP, and add your name to the author field.
 
 ## Chat
 
