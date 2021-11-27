@@ -1,0 +1,1 @@
+This directory contains objects that were present in the original game.
