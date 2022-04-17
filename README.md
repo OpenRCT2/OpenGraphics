@@ -1,14 +1,22 @@
 # OpenRCT2/OpenGraphics
 
-**OpenGraphics** is a project established to replace the base graphics of Rollercoaster Tycoon 2. The aim is to create a set of freely-useable graphics that can be used with [OpenRCT2](https://github.com/OpenRCT2/OpenRCT2), in order to decouple its reliance on the copyrighted material from the original game, and to allow anyone to play the game for free.
+**OpenGraphics** is a project established to replace the base graphics of Rollercoaster Tycoon 2. The aim is to create a set of freely-useable graphics that can be used with [OpenRCT2](https://github.com/OpenRCT2/OpenRCT2). This will help OpenRCT2 to be more accessible, as well as make it easier to add new features and content to the game.
 
 ## Getting Started
 
-We're in the process of setting up pipelines and deciding on the direction of OpenGraphics. If you have experience with art or tool development then consider checking out our discussions about establishing the rendering process:
-https://github.com/OpenRCT2/OpenGraphics/issues/24
+For most object types the most accurate and quickest way to create sprites is using the [RCT Graphics Helper add-on for Blender 2.79](https://github.com/oli414/Blender-RCT-Graphics)
 
-You can already start helping out by creating 3D models for scenery objects. If possible, you should use Blender 2.7. Check out [the spreadsheet](https://drive.google.com/open?id=1ljVeYxp8ijj5z4VuSa6Xo1-_p3wACdQCRudkvkLGApc), to see what has already been made.
-To contribute, simply mark an object as WIP and add your name to the author field.
+Blender Render last available in [Blender 2.79](https://www.blender.org/download/previous-versions/) is the most accurate render engine (for its time) that we have access to as an open source project.
+You can use other software to create your models as well, as long as your main source file that you contribute to the project is a a Blender (.blend) file.
+
+Scenery objects and stalls are currently the most accessible object type to create 3D models for. Check out [the spreadsheet](https://docs.google.com/spreadsheets/d/1ljVeYxp8ijj5z4VuSa6Xo1-_p3wACdQCRudkvkLGApc/edit#gid=1082671812) to see what has already been made. Just mark an object as WIP, and add your name to the author field.
+
+## Requirements
+
+- Only use public domain textures.
+- Refrain from using premade models.
+- Do not copy real life products (including rides). Look at how other games parody real life for inspiration, Planet Coaster is a good example of what is accepted.
+- Objects need to maintain the same size and features as the RCT2 variants.
 
 ## Chat
 

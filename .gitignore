@@ -1,14 +1,4 @@
-#Renders
-**/finished
-**/renderout
-**/test
-
-#Other images, excluding template folder
-*.png
-*.jpg
-*.gif
-*.bmp
-!templates/**
+*.parkobj
 
 #Hidden folders/files
 .*/
