@@ -32,6 +32,16 @@
             "id": "rct2.scenery_small.tbr4",
             "sprites": "rct2/scenery/MineTheming/Barrel4/output/images.json",
             "authors": ["Oli414"]
+        },
+        {
+            "id": "rct2.scenery_small.tml",
+            "sprites": "rct2/scenery/MineTheming/Logs/output/images.json",
+            "authors": ["Oli414"]
+        },
+        {
+            "id": "rct2.scenery_small.tmw",
+            "sprites": "rct2/scenery/MineTheming/Wheels/output/images.json",
+            "authors": ["Oli414"]
         }
     ]
 }
