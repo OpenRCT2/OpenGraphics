@@ -1,0 +1,63 @@
+{
+    "id": "open_graphics.scenery_small.tbr3",
+    "authors": [
+        "Oli414"
+    ],
+    "version": "1.0",
+    "objectType": "scenery_small",
+    "properties": {
+        "price": 4,
+        "removalPrice": -3,
+        "cursor": "CURSOR_HOUSE_DOWN",
+        "height": 12,
+        "shape": "1/4",
+        "isRotatable": true,
+        "isStackable": true
+    },
+    "images": [
+        {
+            "path": "sprite_0.png",
+            "x": -10,
+            "y": -12,
+            "format": "keep"
+        },
+        {
+            "path": "sprite_1.png",
+            "x": -10,
+            "y": -12,
+            "format": "keep"
+        },
+        {
+            "path": "sprite_2.png",
+            "x": -10,
+            "y": -12,
+            "format": "keep"
+        },
+        {
+            "path": "sprite_3.png",
+            "x": -10,
+            "y": -12,
+            "format": "keep"
+        }
+    ],
+    "strings": {
+        "name": {
+            "en-GB": "Barrel",
+            "fr-FR": "Tonneau",
+            "de-DE": "Fass",
+            "es-ES": "Barril",
+            "it-IT": "Barile",
+            "nl-NL": "Vat",
+            "sv-SE": "Tunna",
+            "ko-KR": "통",
+            "zh-CN": "桶",
+            "zh-TW": "桶",
+            "pt-BR": "Barril",
+            "cs-CZ": "Barel",
+            "ja-JP": "樽",
+            "pl-PL": "Beczułka",
+            "ru-RU": "Бочка",
+            "eo-ZZ": "Barelo"
+        }
+    }
+}

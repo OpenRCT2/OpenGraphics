@@ -1,4 +1,5 @@
 *.parkobj
+rct2/**/output/object.obj
 
 #Hidden folders/files
 .*/
