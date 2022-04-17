@@ -1,22 +1,37 @@
-[
-    {
-        "id": "rct2.scenery_small.tbr1",
-        "sprites": "/rct2/scenery/MineTheming/Barrel1/images.json",
-        "authors": ["Oli414"]
+{
+    "id": "openrct2.asset_pack.opengraphics",
+    "authors": [
+        "OpenRCT2"
+    ],
+    "version": "1.0",
+    "strings": {
+        "name": {
+            "en-GB": "Open Graphics"
+        },
+        "description": {
+            "en-GB": "The official OpenRCT2 graphics pack that replicates the nostalgic graphical style"
+        }
     },
-    {
-        "id": "rct2.scenery_small.tbr2",
-        "sprites": "/rct2/scenery/MineTheming/Barrel2/images.json",
-        "authors": ["Oli414"]
-    },
-    {
-        "id": "rct2.scenery_small.tbr3",
-        "sprites": "/rct2/scenery/MineTheming/Barrel3/images.json",
-        "authors": ["Oli414"]
-    },
-    {
-        "id": "rct2.scenery_small.tbr4",
-        "sprites": "/rct2/scenery/MineTheming/Barrel4/images.json",
-        "authors": ["Oli414"]
-    }
-]
+    "objects": [
+        {
+            "id": "rct2.scenery_small.tbr1",
+            "sprites": "rct2/scenery/MineTheming/Barrel1/output/images.json",
+            "authors": ["Oli414"]
+        },
+        {
+            "id": "rct2.scenery_small.tbr2",
+            "sprites": "rct2/scenery/MineTheming/Barrel2/output/images.json",
+            "authors": ["Oli414"]
+        },
+        {
+            "id": "rct2.scenery_small.tbr3",
+            "sprites": "rct2/scenery/MineTheming/Barrel3/output/images.json",
+            "authors": ["Oli414"]
+        },
+        {
+            "id": "rct2.scenery_small.tbr4",
+            "sprites": "rct2/scenery/MineTheming/Barrel4/output/images.json",
+            "authors": ["Oli414"]
+        }
+    ]
+}
