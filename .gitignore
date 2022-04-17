@@ -1,5 +1,5 @@
 *.parkobj
-object.obj
+/rct2/object.obj
 
 #Hidden folders/files
 .*/
