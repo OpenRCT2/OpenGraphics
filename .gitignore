@@ -1,5 +1,5 @@
 *.parkobj
-rct2/*/object.obj
+/rct2/**/object.json
 
 #Hidden folders/files
 .*/
