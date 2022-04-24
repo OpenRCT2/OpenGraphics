@@ -1,3 +1,4 @@
+out/
 *.parkobj
 /rct2/**/object.json
 
