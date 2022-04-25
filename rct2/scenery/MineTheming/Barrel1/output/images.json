@@ -7,13 +7,13 @@
     },
     {
         "path": "sprite_1.png",
-        "x": -9,
+        "x": -8,
         "y": -13,
         "format": "keep"
     },
     {
         "path": "sprite_2.png",
-        "x": -8,
+        "x": -7,
         "y": -14,
         "format": "keep"
     },

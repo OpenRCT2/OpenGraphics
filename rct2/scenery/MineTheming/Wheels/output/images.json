@@ -1,26 +1,26 @@
 [
     {
         "path": "sprite_0.png",
-        "x": -17,
-        "y": -14,
+        "x": -16,
+        "y": -16,
         "format": "keep"
     },
     {
         "path": "sprite_1.png",
-        "x": -23,
-        "y": -13,
+        "x": -24,
+        "y": -15,
         "format": "keep"
     },
     {
         "path": "sprite_2.png",
         "x": -17,
-        "y": -17,
+        "y": -16,
         "format": "keep"
     },
     {
         "path": "sprite_3.png",
-        "x": -23,
-        "y": -14,
+        "x": -24,
+        "y": -13,
         "format": "keep"
     }
 ]
