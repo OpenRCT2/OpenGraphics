@@ -1,0 +1,32 @@
+{
+    "id": "rct2.scenery_small.tbr4",
+    "authors": [
+        "Oli414"
+    ],
+    "images": [
+        {
+            "path": "output/sprite_0.png",
+            "x": -6,
+            "y": -18,
+            "palette": "keep"
+        },
+        {
+            "path": "output/sprite_1.png",
+            "x": -6,
+            "y": -18,
+            "palette": "keep"
+        },
+        {
+            "path": "output/sprite_2.png",
+            "x": -6,
+            "y": -18,
+            "palette": "keep"
+        },
+        {
+            "path": "output/sprite_3.png",
+            "x": -6,
+            "y": -18,
+            "palette": "keep"
+        }
+    ]
+}

@@ -1,4 +1,6 @@
+out/
 *.parkobj
+images.json
 /rct2/**/object.json
 
 #Hidden folders/files
