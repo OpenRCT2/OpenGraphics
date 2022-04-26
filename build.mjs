@@ -8,11 +8,23 @@ async function main() {
     manifest.objects = [];
 
     const singleSpriteManifest = [];
+    for (const dir of ['rct2', 'openrct2']) {
+        await processDirectory(manifest, singleSpriteManifest, dir);
+    }
 
-    const files = await getAllFiles('rct2');
+    await mkdir('out');
+    await writeJsonFile('out/object.json', manifest);
+    await writeJsonFile('out/images.json', singleSpriteManifest);
+    await compileGx('out/images.json', 'out/images.dat');
+    await zip('out', 'openrct2.asset_pack.opengraphics.parkap', ['object.json', 'images.dat']);
+}
+
+async function processDirectory(manifest, singleSpriteManifest, dir) {
+    const files = await getAllFiles(dir);
     let imageIndex = 0;
     for (const file of files) {
-        if (file.endsWith('.json')) {
+        const jsonRegex = /^.+\..+\.json$/;
+        if (jsonRegex.test(file)) {
             const cwd = path.join('..', path.dirname(file));
 
             const obj = await readJsonFile(file);
@@ -26,12 +38,6 @@ async function main() {
             imageIndex += images.length;
         }
     }
-
-    await mkdir('out');
-    await writeJsonFile('out/object.json', manifest);
-    await writeJsonFile('out/images.json', singleSpriteManifest);
-    await compileGx('out/images.json', 'out/images.dat');
-    await zip('out', 'openrct2.asset_pack.opengraphics.parkap', ['object.json', 'images.dat']);
 }
 
 function compileGx(manifest, outputFile) {
