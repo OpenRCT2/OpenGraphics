@@ -7,26 +7,22 @@
         {
             "path": "output/sprite_0.png",
             "x": -10,
-            "y": -12,
-            "palette": "keep"
+            "y": -12
         },
         {
             "path": "output/sprite_1.png",
             "x": -10,
-            "y": -12,
-            "palette": "keep"
+            "y": -12
         },
         {
             "path": "output/sprite_2.png",
             "x": -10,
-            "y": -12,
-            "palette": "keep"
+            "y": -12
         },
         {
             "path": "output/sprite_3.png",
             "x": -10,
-            "y": -12,
-            "palette": "keep"
+            "y": -12
         }
     ]
 }

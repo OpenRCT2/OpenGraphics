@@ -21,7 +21,7 @@ async function main() {
                 image.path = path.join(cwd, image.path);
             }
             singleSpriteManifest.push(...images);
-            obj.images = `images.dat[${imageIndex}..${imageIndex + images.length - 1}]`;
+            obj.images = `$LGX:images.dat[${imageIndex}..${imageIndex + images.length - 1}]`;
             manifest.objects.push(obj);
             imageIndex += images.length;
         }
