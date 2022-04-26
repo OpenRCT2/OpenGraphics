@@ -3,45 +3,109 @@ import fs from 'fs';
 import path from 'path';
 import { spawn } from 'child_process';
 
+const verbose = process.argv.indexOf('--verbose') != -1;
+
 async function main() {
+    const objects = [];
+    for (const dir of ['rct2', 'openrct2']) {
+        const moreObjects = await getObjects(dir);
+        objects.push(...moreObjects);
+    }
+
+    // Process all objects with gx files first before those with .png files
+    objects.sort((a, b) => {
+        if (typeof a.images === typeof b.images) return 0;
+        if (typeof a.images === 'string') return -1;
+        return 1;
+    });
+
     const manifest = await readJsonFile('manifest.json');
     manifest.objects = [];
-
     const singleSpriteManifest = [];
-    for (const dir of ['rct2', 'openrct2']) {
-        await processDirectory(manifest, singleSpriteManifest, dir);
+    const gxMergeList = [];
+    let imageIndex = 0;
+    for (const obj of objects) {
+        let numImages;
+        const images = obj.images;
+
+        if (typeof images === 'string') {
+            const result = images.match(/^\$LGX:(.+)\[([0-9]+)\.\.([0-9]+)\]$/);
+            if (result) {
+                const fileName = result[1];
+                const index = parseInt(result[2]);
+                const length = parseInt(result[3]);
+                gxMergeList.push(path.join(obj.cwd, fileName));
+                numImages = length - index + 1;
+            } else {
+                const result = images.match(/^\$LGX:(.+)$/);
+                if (result) {
+                    const fileName = result[1];
+                    const fullPath = path.join(obj.cwd, fileName);
+                    gxMergeList.push(fullPath);
+                    numImages = await getGxImageCount('out', fullPath);
+                } else {
+                    throw new Error(`Unsupported image format: ${images}`);
+                }
+            }
+        } else {
+            for (const image of images) {
+                image.path = path.join(obj.cwd, image.path);
+            }
+            singleSpriteManifest.push(...images);
+            numImages = images.length;
+        }
+
+        obj.images = `$LGX:images.dat[${imageIndex}..${imageIndex + numImages - 1}]`;
+        obj.cwd = undefined;
+        manifest.objects.push(obj);
+        imageIndex += numImages;
     }
+    gxMergeList.push('images.dat');
 
     await mkdir('out');
     await writeJsonFile('out/object.json', manifest);
     await writeJsonFile('out/images.json', singleSpriteManifest);
-    await compileGx('out/images.json', 'out/images.dat');
+    await compileGx('out', 'images.json', 'images.dat');
+    if (gxMergeList.length >= 2) {
+        await mergeGx('out', gxMergeList, 'images.dat');
+    }
     await zip('out', 'openrct2.asset_pack.opengraphics.parkap', ['object.json', 'images.dat']);
 }
 
-async function processDirectory(manifest, singleSpriteManifest, dir) {
+async function getObjects(dir) {
+    const result = [];
     const files = await getAllFiles(dir);
-    let imageIndex = 0;
     for (const file of files) {
         const jsonRegex = /^.+\..+\.json$/;
         if (jsonRegex.test(file)) {
             const cwd = path.join('..', path.dirname(file));
-
             const obj = await readJsonFile(file);
-            const images = obj.images;
-            for (const image of images) {
-                image.path = path.join(cwd, image.path);
-            }
-            singleSpriteManifest.push(...images);
-            obj.images = `$LGX:images.dat[${imageIndex}..${imageIndex + images.length - 1}]`;
-            manifest.objects.push(obj);
-            imageIndex += images.length;
+            obj.cwd = cwd;
+            result.push(obj);
         }
+    }
+    return result;
+}
+
+function compileGx(cwd, manifest, outputFile) {
+    return startProcess('gxc', ['build', outputFile, manifest], cwd);
+}
+
+async function mergeGx(cwd, inputFiles, outputFile) {
+    await startProcess('gxc', ['merge', outputFile, inputFiles[inputFiles.length - 2], inputFiles[inputFiles.length - 1]], cwd);
+    for (let i = inputFiles.length - 3; i >= 0; i--) {
+        await startProcess('gxc', ['merge', outputFile, inputFiles[i], outputFile], cwd);
     }
 }
 
-function compileGx(manifest, outputFile) {
-    return startProcess('gxc', ['build', outputFile, manifest]);
+async function getGxImageCount(cwd, inputFile) {
+    const stdout = await startProcess('gxc', ['details', inputFile], cwd);
+    const result = stdout.match(/numEntries: ([0-9]+)/);
+    if (result) {
+        return parseInt(result[1]);
+    } else {
+        throw new Error(`Unable to get number of images for gx file: ${inputFile}`);
+    }
 }
 
 function readJsonFile(path) {
@@ -70,13 +134,16 @@ function writeJsonFile(path, data) {
 }
 
 function zip(cwd, outputFile, paths) {
-    return startProcess('zip', [outputFile, ...paths], cwd)
+    return startProcess('zip', [outputFile, ...paths], cwd);
 }
 
 function startProcess(name, args, cwd) {
     return new Promise((resolve, reject) => {
         const options = {};
         if (cwd) options.cwd = cwd;
+        if (verbose) {
+            console.log(`Launching \"${name} ${args.join(' ')}\"`);
+        }
         const child = spawn(name, args, options);
         let stdout = '';
         child.stdout.on('data', data => {
@@ -96,7 +163,7 @@ function startProcess(name, args, cwd) {
             if (code !== 0) {
                 reject(new Error(`${name} failed:\n${stdout}`));
             } else {
-                resolve(code);
+                resolve(stdout);
             }
         });
     });
