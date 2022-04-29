@@ -141,7 +141,7 @@ function writeJsonFile(path, data) {
 function zip(cwd, outputFile, paths) {
     if (platform() == 'win32') {
         console.log(paths);
-        return startProcess('7z', ['a', outputFile, ...paths], cwd);
+        return startProcess('7z', ['a', '-tzip', outputFile, ...paths], cwd);
     } else {
         return startProcess('zip', [outputFile, ...paths], cwd);
     }
