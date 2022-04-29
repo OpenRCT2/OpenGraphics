@@ -18,6 +18,8 @@ async function main() {
         if (typeof a.images === 'string') return -1;
         return 1;
     });
+    
+    await mkdir('out');
 
     const manifest = await readJsonFile('manifest.json');
     manifest.objects = [];
@@ -40,6 +42,8 @@ async function main() {
                 const result = images.match(/^\$LGX:(.+)$/);
                 if (result) {
                     const fileName = result[1];
+                    console.log(obj.cwd);
+                    console.log(fileName);
                     const fullPath = path.join(obj.cwd, fileName);
                     gxMergeList.push(fullPath);
                     numImages = await getGxImageCount('out', fullPath);
@@ -49,6 +53,7 @@ async function main() {
             }
         } else {
             for (const image of images) {
+                console.log("test " + obj.cwd + " " + image.path);
                 image.path = path.join(obj.cwd, image.path);
             }
             singleSpriteManifest.push(...images);
@@ -62,7 +67,6 @@ async function main() {
     }
     gxMergeList.push('images.dat');
 
-    await mkdir('out');
     await writeJsonFile('out/object.json', manifest);
     await writeJsonFile('out/images.json', singleSpriteManifest);
     await compileGx('out', 'images.json', 'images.dat');
@@ -134,7 +138,7 @@ function writeJsonFile(path, data) {
 }
 
 function zip(cwd, outputFile, paths) {
-    return startProcess('zip', [outputFile, ...paths], cwd);
+    return startProcess('7z', ['a', outputFile, ...paths], cwd);
 }
 
 function startProcess(name, args, cwd) {
@@ -154,7 +158,7 @@ function startProcess(name, args, cwd) {
         });
         child.on('error', err => {
             if (err.code == 'ENOENT') {
-                reject(new Error(`${name} not found`));
+                reject(new Error(`${name} was not found`));
             } else {
                 reject(err);
             }
