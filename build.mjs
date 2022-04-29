@@ -2,6 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 import { spawn } from 'child_process';
+import { platform } from 'os';
 
 const verbose = process.argv.indexOf('--verbose') != -1;
 
@@ -138,7 +139,12 @@ function writeJsonFile(path, data) {
 }
 
 function zip(cwd, outputFile, paths) {
-    return startProcess('7z', ['a', outputFile, ...paths], cwd);
+    if (platform() == 'win32') {
+        console.log(paths);
+        return startProcess('7z', ['a', outputFile, ...paths], cwd);
+    } else {
+        return startProcess('zip', [outputFile, ...paths], cwd);
+    }
 }
 
 function startProcess(name, args, cwd) {
