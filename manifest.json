@@ -9,7 +9,8 @@
             "en-GB": "Open Graphics"
         },
         "description": {
-            "en-GB": "The official OpenRCT2 graphics pack that replicates the nostalgic graphical style"
+            "en-GB": "The official OpenRCT2 asset pack that replicates the nostalgic graphical style",
+            "nl-NL": "Het officiële OpenRCT2 assetpakket dat de nostalgische grafische stijl repliceert"
         }
     }
 }
