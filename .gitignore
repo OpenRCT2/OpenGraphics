@@ -1,13 +1,13 @@
+temp/
+out/
 *.parkobj
-
-#Hidden folders/files
-.*/
-.*
-!.gitignore
+*.png
+/rct2/**/sprites/
+sprites.json
+/rct2/**/object.json
 
 # Blender Autosave files
 *.blend1
-
 
 #OS special files
 *~

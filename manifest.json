@@ -1,0 +1,16 @@
+{
+    "id": "openrct2.graphics.opengraphics",
+    "authors": [
+        "OpenRCT2"
+    ],
+    "version": "0.1",
+    "strings": {
+        "name": {
+            "en-GB": "Open Graphics"
+        },
+        "description": {
+            "en-GB": "The official OpenRCT2 asset pack that replicates the nostalgic graphical style",
+            "nl-NL": "Het officiële OpenRCT2 assetpakket dat de nostalgische grafische stijl repliceert"
+        }
+    }
+}
