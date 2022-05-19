@@ -75,9 +75,12 @@ async function main() {
     if (gxMergeList.length >= 2) {
         await mergeGx('temp', gxMergeList, 'images.dat');
     }
-    await zip('temp', '../out/openrct2.asset_pack.opengraphics.parkap', ['manifest.json', 'images.dat']);
+
+    const outFilename = `${manifest.id}.parkap`
+    const outPath = path.join('../out/', outFilename);
+    await zip('temp', outPath, ['manifest.json', 'images.dat']);
     rm('temp');
-    console.log(`openrct2.asset_pack.opengraphics.parkap created successfully`);
+    console.log(`${outFilename} created successfully`);
 }
 
 async function getObjects(dir) {
