@@ -19,7 +19,7 @@ async function main() {
         if (typeof a.images === 'string') return -1;
         return 1;
     });
-    
+
     await mkdir('out');
 
     const manifest = await readJsonFile('manifest.json');
@@ -28,6 +28,8 @@ async function main() {
     const gxMergeList = [];
     let imageIndex = 0;
     for (const obj of objects) {
+        console.log(`Processing ${obj.id}...`);
+
         let numImages;
         const images = obj.images;
 
@@ -43,8 +45,6 @@ async function main() {
                 const result = images.match(/^\$LGX:(.+)$/);
                 if (result) {
                     const fileName = result[1];
-                    console.log(obj.cwd);
-                    console.log(fileName);
                     const fullPath = path.join(obj.cwd, fileName);
                     gxMergeList.push(fullPath);
                     numImages = await getGxImageCount('out', fullPath);
@@ -54,7 +54,6 @@ async function main() {
             }
         } else {
             for (const image of images) {
-                console.log("test " + obj.cwd + " " + image.path);
                 image.path = path.join(obj.cwd, image.path);
             }
             singleSpriteManifest.push(...images);
@@ -68,13 +67,15 @@ async function main() {
     }
     gxMergeList.push('images.dat');
 
-    await writeJsonFile('out/object.json', manifest);
+    console.log(`Building asset pack...`);
+    await writeJsonFile('out/manifest.json', manifest);
     await writeJsonFile('out/images.json', singleSpriteManifest);
     await compileGx('out', 'images.json', 'images.dat');
     if (gxMergeList.length >= 2) {
         await mergeGx('out', gxMergeList, 'images.dat');
     }
-    await zip('out', 'openrct2.asset_pack.opengraphics.parkap', ['object.json', 'images.dat']);
+    await zip('out', 'openrct2.asset_pack.opengraphics.parkap', ['manifest.json', 'images.dat']);
+    console.log(`openrct2.asset_pack.opengraphics.parkap created successfully`);
 }
 
 async function getObjects(dir) {
