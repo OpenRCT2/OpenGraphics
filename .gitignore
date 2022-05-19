@@ -6,14 +6,8 @@ out/
 sprites.json
 /rct2/**/object.json
 
-#Hidden folders/files
-.*/
-.*
-!.gitignore
-
 # Blender Autosave files
 *.blend1
-
 
 #OS special files
 *~
