@@ -21,6 +21,7 @@ async function main() {
     });
 
     await mkdir('out');
+    await mkdir('temp');
 
     const manifest = await readJsonFile('manifest.json');
     manifest.objects = [];
@@ -68,13 +69,14 @@ async function main() {
     gxMergeList.push('images.dat');
 
     console.log(`Building asset pack...`);
-    await writeJsonFile('out/manifest.json', manifest);
-    await writeJsonFile('out/images.json', singleSpriteManifest);
-    await compileGx('out', 'images.json', 'images.dat');
+    await writeJsonFile('temp/manifest.json', manifest);
+    await writeJsonFile('temp/images.json', singleSpriteManifest);
+    await compileGx('temp', 'images.json', 'images.dat');
     if (gxMergeList.length >= 2) {
-        await mergeGx('out', gxMergeList, 'images.dat');
+        await mergeGx('temp', gxMergeList, 'images.dat');
     }
-    await zip('out', 'openrct2.asset_pack.opengraphics.parkap', ['manifest.json', 'images.dat']);
+    await zip('temp', '../out/openrct2.asset_pack.opengraphics.parkap', ['manifest.json', 'images.dat']);
+    rm('temp');
     console.log(`openrct2.asset_pack.opengraphics.parkap created successfully`);
 }
 
@@ -234,6 +236,39 @@ function getAllFiles(root) {
             });
         };
         find(root);
+    });
+}
+
+function rm(filename) {
+    if (verbose) {
+        console.log(`Deleting ${filename}`)
+    }
+    return new Promise((resolve, reject) => {
+        fs.stat(filename, (err, stat) => {
+            if (err) {
+                if (err.code == 'ENOENT') {
+                    resolve();
+                } else {
+                    reject();
+                }
+            } else {
+                if (stat.isDirectory()) {
+                    fs.rm(filename, { recursive: true }, err => {
+                        if (err) {
+                            reject(err);
+                        }
+                        resolve();
+                    });
+                } else {
+                    fs.unlink(filename, err => {
+                        if (err) {
+                            reject(err);
+                        }
+                        resolve();
+                    });
+                }
+            }
+        });
     });
 }
 
