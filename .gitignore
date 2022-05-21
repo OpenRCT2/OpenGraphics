@@ -1,4 +1,5 @@
 temp/
+.temp/
 out/
 *.parkobj
 *.png
@@ -8,6 +9,9 @@ sprites.json
 
 # Blender Autosave files
 *.blend1
+
+# Code editor
+.vscode/*
 
 #OS special files
 *~
