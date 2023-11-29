@@ -15,6 +15,7 @@ Current blockers
 - Track Sprites, the only way to render track sprites is using X7s track renderer, the accessibility of this tool is currently limited. Support for track rendering in the Blender RCT Graphics add-on would be ideal for consistency.
 - GFX Asset Packs, whilst tested in 2022, the GFX asset pack implementation wasn't merged, and was limited to overwriting graphics from object files only.
 - Flat Rides, each flat ride type has unique rendering code and thus needs its sprite to be cut up in unique ways. The Blender RCT Graphics add-on currently does not support this.
+- Vegetation, the rendering of trees and shrubbery requires further research.
 
 ## Getting Started
 
