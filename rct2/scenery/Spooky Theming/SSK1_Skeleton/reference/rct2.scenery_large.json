@@ -1,0 +1,62 @@
+{
+    "id": "rct2.scenery_large.ssk1",
+    "authors": [
+        "Chris Sawyer",
+        "Simon Foster"
+    ],
+    "version": "1.0",
+    "originalId": "0A188C82|SSK1    |5310ECFA",
+    "sourceGame": [
+        "rct2",
+        "rct1aa"
+    ],
+    "objectType": "scenery_large",
+    "properties": {
+        "price": 55,
+        "removalPrice": -50,
+        "cursor": "CURSOR_STATUE_DOWN",
+        "hasPrimaryColour": true,
+        "hasSecondaryColour": true,
+        "tiles": [
+            {
+                "x": 0,
+                "y": 0,
+                "clearance": 80,
+                "hasSupports": true,
+                "walls": 7
+            },
+            {
+                "x": 0,
+                "y": -32,
+                "clearance": 80,
+                "hasSupports": true,
+                "walls": 13
+            }
+        ]
+    },
+    "images": [
+        "$RCT2:OBJDATA/SSK1.DAT[0..11]"
+    ],
+    "strings": {
+        "name": {
+            "en-GB": "Skeleton",
+            "fr-FR": "Squelette",
+            "de-DE": "Skelett",
+            "es-ES": "Esqueleto",
+            "it-IT": "Scheletro",
+            "nl-NL": "Skelet",
+            "sv-SE": "Skelett",
+            "ko-KR": "해골",
+            "zh-CN": "骨架",
+            "zh-TW": "骨骼",
+            "pt-BR": "Esqueleto",
+            "cs-CZ": "Kostlivec",
+            "ja-JP": "骸骨",
+            "pl-PL": "Szkielet",
+            "ru-RU": "Скелет",
+            "eo-ZZ": "Skeleto",
+            "ca-ES": "Esquelet",
+            "fi-FI": "Luuranko"
+        }
+    }
+}
