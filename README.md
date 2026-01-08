@@ -19,7 +19,7 @@ Current blockers
 
 ## Getting Started
 
-For most object types the most accurate and quickest way to create sprites is using the [RCT Graphics Helper add-on for Blender 2.79](https://github.com/oli414/Blender-RCT-Graphics)
+For most object types the most accurate and quickest way to create sprites is using the [RCT Graphics Helper add-on for Blender 2.79](https://github.com/OpenRCT2/Blender-RCT-Graphics)
 
 Blender Render last available in [Blender 2.79](https://www.blender.org/download/previous-versions/) is the most accurate render engine (for its time) that we have access to as an open source project.
 You can use other software to create your models as well, as long as your main source file that you contribute to the project is a a Blender (.blend) file.
